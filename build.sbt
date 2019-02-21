@@ -40,6 +40,9 @@ publishTo := {
         Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 
+//brew install gpg
+//useGpg := true
+
 publishMavenStyle := true
 
 publishArtifact in Test := false
