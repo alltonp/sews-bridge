@@ -7,52 +7,43 @@ organization := "im.mange"
 
 version := Try(sys.env("TRAVIS_BUILD_NUMBER")).map("0.0." + _).getOrElse("1.0-SNAPSHOT")
 
-scalaVersion:= "2.12.4"
-
-//crossScalaVersions := Seq("2.10.4"/*, "2.11.0"*/)
+scalaVersion := "2.12.4"
 
 resolvers ++= Seq(
-  "Sonatype OSS Releases" at "http://oss.sonatype.org/content/repositories/releases/"
+  "Sonatype OSS Releases" at "http://oss.sonatype.org/content/repositories/releases/",
+  "Tim Tennant's repo" at "http://dl.bintray.com/timt/repo/"
 )
+
+unmanagedSourceDirectories in Test += baseDirectory.value / "src" / "example" / "scala"
 
 libraryDependencies ++= Seq(
-//	"junit" % "junit" % "4.11" % "test->default",
-//	"org.scalatest" %% "scalatest" % "2.2.0" % "test"
+  "io.shaka" %% "naive-http" % "94",
+  "org.eclipse.jetty.websocket" % "websocket-server" % "9.2.24.v20180105", // % "provided",
+  //9.4.8.v20171121 - see http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/
+  "com.github.alexarchambault" %% "argonaut-shapeless_6.2" % "1.2.0-M4",
+  "org.reactormonk" % "elmtypes_2.12" % "0.4",
+  //60
+  "im.mange" %% "little" % "[0.0.49,0.0.999]" % "provided"
 )
 
-//libraryDependencies := {
-//  CrossVersion.partialVersion(scalaVersion.value) match {
-//    case Some((2, scalaMajor)) if scalaMajor >= 11 => libraryDependencies.value :+ "org.scala-lang.modules" %% "scala-xml" % "1.0.1"
-//    case _ => libraryDependencies.value
-//  }
-//}
-
-//net.virtualvoid.sbt.graph.Plugin.graphSettings
-
-//TIP: for app publishing ... start commenting from here
 sonatypeSettings
 
 publishTo := {
-    val nexus = "https://oss.sonatype.org/"
-    if (isSnapshot.value)
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-    else
-        Some("releases" at nexus + "service/local/staging/deploy/maven2")
+  val nexus = "https://oss.sonatype.org/"
+  if (isSnapshot.value)
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
-
-//brew install gpg
-//useGpg := true
 
 publishMavenStyle := true
 
 publishArtifact in Test := false
-//TIP: for app publishing ... finish commenting here
 
 homepage := Some(url("https://github.com/alltonp/sews-bridge"))
 
 licenses +=("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0.html"))
 
-//TIP: for lib publishing ... comment this too
 credentials += Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", System.getenv("SONATYPE_USER"), System.getenv("SONATYPE_PASSWORD"))
 
 pomExtra :=
