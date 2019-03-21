@@ -24,7 +24,8 @@ libraryDependencies ++= Seq(
   "io.argonaut" %% "argonaut" % "6.2.2",
   "com.davegurnell" %% "bridges" % "0.12.1",
 
-  //  "com.github.alexarchambault" %% "argonaut-shapeless_6.2" % "1.2.0-M4",
+  //TODO: ultimately this must die ..
+  "com.github.alexarchambault" %% "argonaut-shapeless_6.2" % "1.2.0-M4",
   //  "org.reactormonk" % "elmtypes_2.12" % "0.4",
 
   //60

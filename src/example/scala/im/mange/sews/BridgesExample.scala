@@ -1,14 +1,6 @@
 package im.mange.sews
 
-//import argonaut.ArgonautShapeless
-//import com.sun.xml.internal.ws.api.pipe.Codecs
-import im.mange.sews.db.{Db, DbCmd, FileStore}
-import io.shaka.http.Http.HttpHandler
-import io.shaka.http.Request.GET
-import io.shaka.http.StaticResponse.static
-
 object BridgesExample extends App {
-
   final case class Color(red: Int, green: Int, blue: Int)
 
   sealed abstract class Shape extends Product with Serializable
@@ -40,7 +32,13 @@ object BridgesExample extends App {
   println(Elm.buildFile("Codec", decls, Map.empty[Ref, TypeReplacement]))
 }
 
+//APP
 object Runner extends App {
+  import im.mange.sews.db.{Db, DbCmd, FileStore}
+  import io.shaka.http.Http.HttpHandler
+  import io.shaka.http.Request.GET
+  import io.shaka.http.StaticResponse.static
+
   LaunchApplication(8888, Configs.default)
 
   object Configs {
@@ -58,7 +56,7 @@ object Runner extends App {
 
   object Codecs {
     import argonaut.DecodeJson
-    import argonaut._//, //ArgonautShapeless._ //TIP: do not optimise imports
+    import argonaut._, ArgonautShapeless._ //TIP: do not optimise imports
 
     val dbCodec = JsonCodec(DecodeJson.of[ServerModel], EncodeJson.of[ServerModel])
     val msgCodec = JsonCodec(DecodeJson.of[ToServer], EncodeJson.of[FromServer])
@@ -117,6 +115,4 @@ object Runner extends App {
     }
   }
 
-
 }
-
