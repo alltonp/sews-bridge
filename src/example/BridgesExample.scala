@@ -57,6 +57,7 @@ object Runner extends App {
 
   private val decls = List(
     decl[ServerModel], //TODO: might be able to remove this, everything codec'ed  should be in ToServer/FromServer
+    decl[ChatMessage], //TODO: shouldnt really need this...
 //    decl[ToServer],
 //    decl[FromServer]
   )
