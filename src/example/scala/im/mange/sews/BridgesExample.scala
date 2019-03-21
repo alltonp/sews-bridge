@@ -49,8 +49,7 @@ object Runner extends App {
         model = db.loadOrElse("chat", ServerModel(Nil, Nil)),
         update = ServerUpdate(Codecs.msgCodec, db),
         init = (subscriber) => Some(Init(subscriber.id)),
-        fini = (subscriber) => Some(Fini(subscriber.id))//,
-//        debug = true
+        fini = (subscriber) => Some(Fini(subscriber.id))
       ))
   }
 
@@ -70,10 +69,10 @@ object Runner extends App {
   sealed trait ToServer
   case class Init(subscriberName: String) extends ToServer
   case class Fini(subscriberName: String) extends ToServer
-  case class WsSend(message: String) extends ToServer
+  case class Send(message: String) extends ToServer
 
   sealed trait FromServer
-  case class WsModelUpdated(serverModel: ServerModel) extends FromServer
+  case class ModelUpdated(model: ServerModel) extends FromServer
 
   //UPDATE
   case class ServerUpdate(msgCodec: JsonCodec[ToServer, FromServer], db: Db[ServerModel],
@@ -88,22 +87,22 @@ object Runner extends App {
       msg match {
 
         case m:Init =>
-          val updatedModel = model.copy(currentChatters = m.subscriberName :: model.currentChatters)
-          (updatedModel, wsCmd.sendAll(WsModelUpdated(updatedModel)))
+          val model_ = model.copy(currentChatters = m.subscriberName :: model.currentChatters)
+          (model_, wsCmd.sendAll(ModelUpdated(model_)))
 
         case m:Fini =>
-          val updatedModel = model.copy(currentChatters = model.currentChatters.filterNot(_ == m.subscriberName ))
-          (updatedModel, wsCmd.sendAll(WsModelUpdated(updatedModel)))
+          val model_ = model.copy(currentChatters = model.currentChatters.filterNot(_ == m.subscriberName ))
+          (model_, wsCmd.sendAll(ModelUpdated(model_)))
 
-        case m:WsSend =>
-          val updatedModel = model.copy(chatMessages = ChatMessage(m.message) :: model.chatMessages)
+        case m:Send =>
+          val model_ = model.copy(chatMessages = ChatMessage(m.message) :: model.chatMessages)
           val cmd = Cmd.batch(
             //TODO: respond to sender ... wsCmd.send("", from),
-            dbCmd.save("chat", updatedModel.copy(currentChatters = Nil)),
-            wsCmd.sendAll(WsModelUpdated(updatedModel))
+            dbCmd.save("chat", model_.copy(currentChatters = Nil)),
+            wsCmd.sendAll(ModelUpdated(model_))
           )
 
-          (updatedModel, cmd)
+          (model_, cmd)
       }
     }
   }
@@ -114,5 +113,4 @@ object Runner extends App {
       case GET(path) => static("src/main/resources", path)
     }
   }
-
 }
