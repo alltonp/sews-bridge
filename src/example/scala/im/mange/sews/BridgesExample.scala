@@ -1,5 +1,9 @@
 package im.mange.sews
 
+import bridges.core.Type.Ref
+import bridges.core.syntax.decl
+import bridges.elm.{Elm, TypeReplacement}
+
 object BridgesExample extends App {
   final case class Color(red: Int, green: Int, blue: Int)
 
@@ -38,6 +42,14 @@ object Runner extends App {
   import io.shaka.http.Http.HttpHandler
   import io.shaka.http.Request.GET
   import io.shaka.http.StaticResponse.static
+
+  private val decls = List(
+    decl[ServerModel],
+    decl[ToServer],
+    decl[FromServer]
+  )
+
+  println(Elm.buildFile("Codec", decls, Map.empty[Ref, TypeReplacement]))
 
   LaunchApplication(8888, Configs.default)
 
