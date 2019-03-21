@@ -2,6 +2,7 @@ import bridges.core.Type.Ref
 import bridges.core.syntax.decl
 import bridges.elm.{Elm, TypeReplacement}
 import im.mange.sews.{Config, LaunchApplication}
+import io.circe.Json
 
 object BridgesExample extends App {
   final case class Color(red: Int, green: Int, blue: Int)
@@ -31,7 +32,26 @@ object BridgesExample extends App {
 
 //  println(Elm.render(decls))
 //  println(Elm.jsonDecoder(decls))
-  println(Elm.buildFile("Codec", decls, Map.empty[Ref, TypeReplacement]))
+  private val customTypeReplacements = Map.empty[Ref, TypeReplacement]
+
+  println(Elm.buildFile("Codec", decls, customTypeReplacements))
+
+//  Elm.decoder(decls, customTypeReplacements)
+
+//  import argonaut._, Argonaut._
+
+  import io.circe.generic.auto._, io.circe.syntax._
+  import io.circe.generic.auto._
+  import io.circe.syntax._
+  import io.circe._, io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
+
+  println("\njsons:")
+  val x = Rectangle(1.2, 1.3, Color(1,2,3))
+  private val json = x.asJson.noSpaces
+  println(json)
+
+  private val decoded: Either[Error, Rectangle] = decode[Rectangle](json)
+  println(decoded)
 }
 
 //APP

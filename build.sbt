@@ -21,8 +21,11 @@ libraryDependencies ++= Seq(
   "org.eclipse.jetty.websocket" % "websocket-server" % "9.2.24.v20180105", // % "provided",
   //9.4.8.v20171121 - see http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/
 
-  "io.argonaut" %% "argonaut" % "6.2.2",
+//  "io.argonaut" %% "argonaut" % "6.2.2",
   "com.davegurnell" %% "bridges" % "0.12.1",
+  "io.circe" %% "circe-core" % "0.11.1",
+  "io.circe" %% "circe-generic" % "0.11.1",
+  "io.circe" %% "circe-parser" % "0.11.1",
 
   //TODO: ultimately this must die ..
   "com.github.alexarchambault" %% "argonaut-shapeless_6.2" % "1.2.0-M4",
