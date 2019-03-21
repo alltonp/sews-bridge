@@ -14,7 +14,7 @@ resolvers ++= Seq(
   "Tim Tennant's repo" at "http://dl.bintray.com/timt/repo/"
 )
 
-unmanagedSourceDirectories in Test += baseDirectory.value / "src" / "example" / "scala"
+unmanagedSourceDirectories in Test += baseDirectory.value / "src" / "example"
 
 libraryDependencies ++= Seq(
   "io.shaka" %% "naive-http" % "94",

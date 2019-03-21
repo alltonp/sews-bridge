@@ -1,47 +1,15 @@
-package im.mange.sews
 
-import bridges.core.Type.Ref
-import bridges.core.syntax.decl
-import bridges.elm.{Elm, TypeReplacement}
-
-object BridgesExample extends App {
-  final case class Color(red: Int, green: Int, blue: Int)
-
-  sealed abstract class Shape extends Product with Serializable
-  final case class Circle(radius: Double, color: Color, width: Int) extends Shape
-  final case class Rectangle(width: Double, height: Double, color: Color) extends Shape
-
-  import bridges.elm._
-//  import bridges.core.Type._
-//  import bridges.core._
-  import bridges.core.syntax._
-//  import bridges.SampleTypes._
-  import bridges.core.Type._
-  import bridges.core.syntax._
-//  import org.scalatest._
-//  import unindent._
-
-  case class All()
-
-  private val decls = List(
-    decl[All],
-    decl[Color],
-    decl[Circle],
-    decl[Rectangle],
-    decl[Shape]
-  )
-
-//  println(Elm.render(decls))
-//  println(Elm.jsonDecoder(decls))
-  println(Elm.buildFile("Codec", decls, Map.empty[Ref, TypeReplacement]))
-}
 
 //APP
-object Runner extends App {
+object Example extends App {
+  import im.mange.sews._
   import im.mange.sews.db.{Db, DbCmd, FileStore}
   import io.shaka.http.Http.HttpHandler
   import io.shaka.http.Request.GET
   import io.shaka.http.StaticResponse.static
+  import bridges.core.Type.Ref
+  import bridges.core.syntax.decl
+  import bridges.elm.{Elm, TypeReplacement}
 
   private val decls = List(
     decl[ServerModel],
@@ -54,6 +22,7 @@ object Runner extends App {
   LaunchApplication(8888, Configs.default)
 
   object Configs {
+    //TODO: ultimately remove the db ness and make this be Counter
     private val db = Db(FileStore("target"), Codecs.dbCodec)
 
     val default = Config(Endpoints.all,
@@ -121,6 +90,7 @@ object Runner extends App {
 
   object Endpoints {
     val all: HttpHandler = {
+      //TODO: should be src/example now
       case GET("/")  => static("src/main/resources", "/index.html")
       case GET(path) => static("src/main/resources", path)
     }
