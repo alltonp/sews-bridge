@@ -1,4 +1,9 @@
+import java.nio.file.Files.readAllBytes
+
 import BridgesExample.decls
+import io.shaka.http.ContentType
+import io.shaka.http.Response.respond
+import io.shaka.http.StaticResponse.toContentType
 
 object BridgesExample extends App {
   final case class Color(red: Int, green: Int, blue: Int)
@@ -52,8 +57,8 @@ object Runner extends App {
 
   private val decls = List(
     decl[ServerModel], //TODO: might be able to remove this, everything codec'ed  should be in ToServer/FromServer
-    decl[ToServer],
-    decl[FromServer]
+//    decl[ToServer],
+//    decl[FromServer]
   )
 
   private val customTypeReplacements = Map.empty[Ref, TypeReplacement]
@@ -128,8 +133,12 @@ object Runner extends App {
   }
 
   object Endpoints {
+    def string(value: String) = respond(value).contentType(ContentType.TEXT_HTML)
+
     val all: HttpHandler = {
-      case GET("/")  => static("src/main/resources", "/index.html")
+      //TODO: these should point to src/example, or even better in-memory strings or NodeSeq
+      case GET("/")  => string("""<b>hello!</b>""")
+//      case GET("/")  => static("src/main/resources", "/index.html")
       case GET(path) => static("src/main/resources", path)
     }
   }
