@@ -1,10 +1,3 @@
-import bridges.core.Type.Ref
-import bridges.core.syntax.decl
-import bridges.elm.{Elm, TypeReplacement}
-import im.mange.sews.{Config, LaunchApplication}
-import io.circe
-import io.circe.Json
-import io.circe.generic.extras.Configuration
 
 object BridgesExample extends App {
   final case class Color(red: Int, green: Int, blue: Int)
@@ -13,70 +6,38 @@ object BridgesExample extends App {
   final case class Circle(radius: Double, color: Color, width: Int) extends Shape
   final case class Rectangle(width: Double, height: Double, color: Color) extends Shape
 
-  import bridges.elm._
+//  import bridges.elm._
 //  import bridges.core.Type._
-//  import bridges.core._
-//  import bridges.SampleTypes._
-  import bridges.core.Type._
-  import bridges.core.syntax._
-//  import org.scalatest._
-//  import unindent._
+//  import bridges.core.syntax._
+  import bridges.core.Type.Ref
+  import bridges.core.syntax.decl
+  import bridges.elm.{Elm, TypeReplacement}
 
-  case class All()
+//  case class All()
 
   private val decls = List(
-    decl[All],
+//    decl[All],
     decl[Color],
     decl[Circle],
     decl[Rectangle],
     decl[Shape]
   )
 
-//  println(Elm.render(decls))
-//  println(Elm.jsonDecoder(decls))
   private val customTypeReplacements = Map.empty[Ref, TypeReplacement]
 
   println(Elm.buildFile("Codec", decls, customTypeReplacements))
 
-//  Elm.decoder(decls, customTypeReplacements)
-
-//  import argonaut._, Argonaut._
-
-//  import io.circe.generic.auto._, io.circe.syntax._
-////  import io.circe.generic.auto._
-//  import io.circe.generic.extras.auto._
-//  import io.circe.syntax._
-////  import io.circe._, io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
-//
-//  import io.circe._, io.circe.parser._
-//  import io.circe.syntax._
-//  import io.circe.generic.extras._
-//
-////  import io.circe.{ Decoder, Encoder, JsonObject }
-////  import io.circe.generic.extras.Configuration
-//  import io.circe.generic.extras.decoding.ConfiguredDecoder
-//  import io.circe.generic.extras.encoding.ConfiguredObjectEncoder
-//  import io.circe.generic.extras.semiauto.{ deriveDecoder, deriveEncoder }
-//  import shapeless.Lazy
-//
-////  CirceConfiguration.genDevConfig
-//
-//  import io.circe.generic.extras.semiauto._
-
+  import io.circe
   import io.circe.parser.decode, io.circe.syntax._
   import io.circe.generic.extras.Configuration, io.circe.generic.extras.auto._
 
   implicit val configuration: Configuration =
     Configuration.default.withDiscriminator("type")
 
-//  implicit val encWrap: Encoder[Shape] = deriveEncoder[Shape]
-
   println("\njson:")
   val x: Shape = Rectangle(1.2, 1.3, Color(1,2,3))
   private val json = x.asJson.noSpaces
   println(json)
-
-//  val json2 = """{"type":"Rectangle", "width":1.2,"height":1.3,"color":{"red":1,"green":2,"blue":3}}"""
 
   println("\nobject:")
   private val decoded: Either[circe.Error, Shape] = decode[Shape](json)
@@ -89,29 +50,29 @@ object BridgesExample extends App {
 //https://github.com/circe/circe/pull/429
 //https://stackoverflow.com/questions/43094140/circe-type-field-not-showing
 
-object CirceConfiguration {
-  import io.circe.{ Decoder, Encoder, JsonObject }
-  import io.circe.generic.extras.Configuration
-  import io.circe.generic.extras.decoding.ConfiguredDecoder
-  import io.circe.generic.extras.encoding.ConfiguredObjectEncoder
-  import io.circe.generic.extras.semiauto.{ deriveDecoder, deriveEncoder }
-  import shapeless.Lazy
-
-  // NOTE: this requires semiauto from 'extras' package to be used in decoders/encoders
-  implicit val genDevConfig: Configuration =
-    Configuration.default.withDiscriminator("type")
-
-  def deriveCustomEncoder[A](implicit encode: Lazy[ConfiguredObjectEncoder[A]]): Encoder[A] =
-    deriveEncoder[A].mapJsonObject(excludeNullsFromJson)
-
-  def deriveCustomDecoder[A](implicit decode: Lazy[ConfiguredDecoder[A]]): Decoder[A] =
-    deriveDecoder[A]
-
-  def excludeNullsFromJson(jsonObject: JsonObject): JsonObject =
-    jsonObject.filter {
-      case (_, value) => !value.isNull
-    }
-}
+//object CirceConfiguration {
+//  import io.circe.{ Decoder, Encoder, JsonObject }
+//  import io.circe.generic.extras.Configuration
+//  import io.circe.generic.extras.decoding.ConfiguredDecoder
+//  import io.circe.generic.extras.encoding.ConfiguredObjectEncoder
+//  import io.circe.generic.extras.semiauto.{ deriveDecoder, deriveEncoder }
+//  import shapeless.Lazy
+//
+//  // NOTE: this requires semiauto from 'extras' package to be used in decoders/encoders
+//  implicit val genDevConfig: Configuration =
+//    Configuration.default.withDiscriminator("type")
+//
+//  def deriveCustomEncoder[A](implicit encode: Lazy[ConfiguredObjectEncoder[A]]): Encoder[A] =
+//    deriveEncoder[A].mapJsonObject(excludeNullsFromJson)
+//
+//  def deriveCustomDecoder[A](implicit decode: Lazy[ConfiguredDecoder[A]]): Decoder[A] =
+//    deriveDecoder[A]
+//
+//  def excludeNullsFromJson(jsonObject: JsonObject): JsonObject =
+//    jsonObject.filter {
+//      case (_, value) => !value.isNull
+//    }
+//}
 
 
 //APP
@@ -121,6 +82,12 @@ object Runner extends App {
   import io.shaka.http.Http.HttpHandler
   import io.shaka.http.Request.GET
   import io.shaka.http.StaticResponse.static
+//  import bridges.elm._
+//  import bridges.core.Type._
+//  import bridges.core.syntax._
+  import bridges.core.Type.Ref
+  import bridges.core.syntax.decl
+  import bridges.elm.{Elm, TypeReplacement}
 
   private val decls = List(
     decl[ServerModel],
