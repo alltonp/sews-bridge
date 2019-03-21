@@ -1,3 +1,4 @@
+import BridgesExample.decls
 
 object BridgesExample extends App {
   final case class Color(red: Int, green: Int, blue: Int)
@@ -6,17 +7,11 @@ object BridgesExample extends App {
   final case class Circle(radius: Double, color: Color, width: Int) extends Shape
   final case class Rectangle(width: Double, height: Double, color: Color) extends Shape
 
-//  import bridges.elm._
-//  import bridges.core.Type._
-//  import bridges.core.syntax._
   import bridges.core.Type.Ref
   import bridges.core.syntax.decl
   import bridges.elm.{Elm, TypeReplacement}
 
-//  case class All()
-
   private val decls = List(
-//    decl[All],
     decl[Color],
     decl[Circle],
     decl[Rectangle],
@@ -24,7 +19,6 @@ object BridgesExample extends App {
   )
 
   private val customTypeReplacements = Map.empty[Ref, TypeReplacement]
-
   println(Elm.buildFile("Codec", decls, customTypeReplacements))
 
   import io.circe
@@ -45,36 +39,6 @@ object BridgesExample extends App {
 }
 
 
-
-//https://underscore.io/blog/posts/2018/12/12/bridges.html
-//https://github.com/circe/circe/pull/429
-//https://stackoverflow.com/questions/43094140/circe-type-field-not-showing
-
-//object CirceConfiguration {
-//  import io.circe.{ Decoder, Encoder, JsonObject }
-//  import io.circe.generic.extras.Configuration
-//  import io.circe.generic.extras.decoding.ConfiguredDecoder
-//  import io.circe.generic.extras.encoding.ConfiguredObjectEncoder
-//  import io.circe.generic.extras.semiauto.{ deriveDecoder, deriveEncoder }
-//  import shapeless.Lazy
-//
-//  // NOTE: this requires semiauto from 'extras' package to be used in decoders/encoders
-//  implicit val genDevConfig: Configuration =
-//    Configuration.default.withDiscriminator("type")
-//
-//  def deriveCustomEncoder[A](implicit encode: Lazy[ConfiguredObjectEncoder[A]]): Encoder[A] =
-//    deriveEncoder[A].mapJsonObject(excludeNullsFromJson)
-//
-//  def deriveCustomDecoder[A](implicit decode: Lazy[ConfiguredDecoder[A]]): Decoder[A] =
-//    deriveDecoder[A]
-//
-//  def excludeNullsFromJson(jsonObject: JsonObject): JsonObject =
-//    jsonObject.filter {
-//      case (_, value) => !value.isNull
-//    }
-//}
-
-
 //APP
 object Runner extends App {
   import im.mange.sews._
@@ -82,20 +46,18 @@ object Runner extends App {
   import io.shaka.http.Http.HttpHandler
   import io.shaka.http.Request.GET
   import io.shaka.http.StaticResponse.static
-//  import bridges.elm._
-//  import bridges.core.Type._
-//  import bridges.core.syntax._
   import bridges.core.Type.Ref
   import bridges.core.syntax.decl
   import bridges.elm.{Elm, TypeReplacement}
 
   private val decls = List(
-    decl[ServerModel],
+    decl[ServerModel], //TODO: might be able to remove this, everything codec'ed  should be in ToServer/FromServer
     decl[ToServer],
     decl[FromServer]
   )
 
-  println(Elm.buildFile("Codec", decls, Map.empty[Ref, TypeReplacement]))
+  private val customTypeReplacements = Map.empty[Ref, TypeReplacement]
+  println(Elm.buildFile("Codec", decls, customTypeReplacements))
 
   LaunchApplication(8888, Configs.default)
 
@@ -172,3 +134,32 @@ object Runner extends App {
     }
   }
 }
+
+
+//https://underscore.io/blog/posts/2018/12/12/bridges.html
+//https://github.com/circe/circe/pull/429
+//https://stackoverflow.com/questions/43094140/circe-type-field-not-showing
+
+//object CirceConfiguration {
+//  import io.circe.{ Decoder, Encoder, JsonObject }
+//  import io.circe.generic.extras.Configuration
+//  import io.circe.generic.extras.decoding.ConfiguredDecoder
+//  import io.circe.generic.extras.encoding.ConfiguredObjectEncoder
+//  import io.circe.generic.extras.semiauto.{ deriveDecoder, deriveEncoder }
+//  import shapeless.Lazy
+//
+//  // NOTE: this requires semiauto from 'extras' package to be used in decoders/encoders
+//  implicit val genDevConfig: Configuration =
+//    Configuration.default.withDiscriminator("type")
+//
+//  def deriveCustomEncoder[A](implicit encode: Lazy[ConfiguredObjectEncoder[A]]): Encoder[A] =
+//    deriveEncoder[A].mapJsonObject(excludeNullsFromJson)
+//
+//  def deriveCustomDecoder[A](implicit decode: Lazy[ConfiguredDecoder[A]]): Decoder[A] =
+//    deriveDecoder[A]
+//
+//  def excludeNullsFromJson(jsonObject: JsonObject): JsonObject =
+//    jsonObject.filter {
+//      case (_, value) => !value.isNull
+//    }
+//}
