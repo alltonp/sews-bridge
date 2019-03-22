@@ -1,9 +1,3 @@
-import java.nio.file.Files.readAllBytes
-
-import BridgesExample.decls
-import io.shaka.http.ContentType
-import io.shaka.http.Response.respond
-import io.shaka.http.StaticResponse.toContentType
 
 object BridgesExample extends App {
   final case class Color(red: Int, green: Int, blue: Int)
@@ -51,6 +45,8 @@ object Runner extends App {
   import io.shaka.http.Http.HttpHandler
   import io.shaka.http.Request.GET
   import io.shaka.http.StaticResponse.static
+  import io.shaka.http.ContentType
+  import io.shaka.http.Response.respond
   import bridges.core.Type.Ref
   import bridges.core.syntax.decl
   import bridges.elm.{Elm, TypeReplacement}
