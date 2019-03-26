@@ -2,6 +2,7 @@ package im.mange.sews.innards
 
 import im.mange.sews.{Subscriber, Subscribers}
 
+//TIP: interestingly, there is nothing actually WebSockety about this... it could work for anything e.g. CLI
 trait WebSocketProgram {
   private [sews] val subscribers: Subscribers
 

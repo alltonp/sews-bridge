@@ -3,6 +3,7 @@ package im.mange.sews.innards
 import org.eclipse.jetty.websocket.server.WebSocketHandler
 import org.eclipse.jetty.websocket.servlet.{ServletUpgradeRequest, ServletUpgradeResponse, WebSocketCreator, WebSocketServletFactory}
 
+//TODO: maybe move to sews.websocket
 case class JettyWebSocketHandler(program: WebSocketProgram) extends WebSocketHandler {
 
   override def configure(factory: WebSocketServletFactory): Unit = {

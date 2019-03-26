@@ -1,5 +1,6 @@
 package im.mange.sews
 
+//TIP: interestingly, there is nothing actually WebSockety about this... it could work for anything e.g. CLI
 case class Subscribers(private var subscribers: Seq[Subscriber], subscriptionDebug: Boolean = false, messageDebug: Boolean = false) {
   def subscribe(subscriber: Subscriber): Unit = {
     synchronized {
