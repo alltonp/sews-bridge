@@ -1,39 +1,23 @@
---https://gist.github.com/CliffordAnderson/972907dc8c98b954290723bc68de5fd6
+-- Elm 0.19 counter as per https://guide.elm-lang.org
 
-module Main exposing (..)
 
-import Html exposing (br, button, div, text)
+module Main exposing (Msg(..), main, update, view)
+
+import Browser
+import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
-import Html.App exposing (beginnerProgram)
 
 
-main : Program Never
 main =
-    beginnerProgram { model = model, view = view, update = update }
+    Browser.sandbox { init = 0, update = update, view = view }
 
 
 type Msg
     = Increment
     | Decrement
+    | Reset
 
 
-model : Int
-model =
-    0
-
-
-view : Int -> Html.Html Msg
-view model =
-    div []
-        [ button [ onClick Increment ] [ text "+" ]
-        , br [] []
-        , text (toString model)
-        , br [] []
-        , button [ onClick Decrement ] [ text "-" ]
-        ]
-
-
-update : Msg -> Int -> Int
 update msg model =
     case msg of
         Increment ->
@@ -41,3 +25,14 @@ update msg model =
 
         Decrement ->
             model - 1
+
+        Reset ->
+            0
+
+
+view model =
+    div []
+        [ button [ onClick Increment ] [ text "+" ]
+        , div [] [ text (String.fromInt model) ]
+        , button [ onClick Reset ] [ text "Reset" ]
+        ]
