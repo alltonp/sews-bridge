@@ -1,6 +1,3 @@
--- Elm 0.19 counter as per https://guide.elm-lang.org
-
-
 module Main exposing (Msg(..), main, update, view)
 
 import Browser
