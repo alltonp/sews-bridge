@@ -38,6 +38,12 @@ object BridgesExample extends App {
 }
 
 
+//TODO: next steps
+//- get the html bit in
+//- make it be the numbers example
+//- one dir per example
+//- use the websocket package
+
 //APP
 object Runner extends App {
   import im.mange.sews._
