@@ -148,6 +148,21 @@ object Runner extends App {
 }
 
 
+//build.sbt
+//val genElmCodec = taskKey[File]("generate elm codec for common types")
+//
+//(genElmCodec) := {
+//  val codec = (baseDirectory).value / "client" / "Codec.elm"
+//  (runner in (run)).value.run("app.shared.Types", Attributed.data((fullClasspath in Compile).value), Seq(codec.toString), streams.value.log)
+//  codec
+//}
+//
+//genElmCodec := genElmCodec.triggeredBy(compile in Compile).value
+
+//clean.sh
+//rm -rf elm-stuff/build-artifacts
+
+
 //https://underscore.io/blog/posts/2018/12/12/bridges.html
 //https://github.com/circe/circe/pull/429
 //https://stackoverflow.com/questions/43094140/circe-type-field-not-showing
