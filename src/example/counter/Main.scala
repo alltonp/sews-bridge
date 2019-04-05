@@ -16,4 +16,7 @@ object Main extends App {
 
   //TODO: start the app itself
   //TODO: docs, point to https://github.com/davegurnell/bridges
+
+  //other websocket options:
+//  https://stackoverflow.com/questions/52010340/how-to-get-websockets-working-in-elm-0-19
 }
